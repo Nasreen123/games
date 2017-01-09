@@ -1,10 +1,17 @@
-sentences = [
-['bonne', 'chance'],
-['bonne', 'annee']
-]
+"""
+To do:
+- continue breaking up code in this file
+   = remove functions from here - getting back variables gave an error - solve?
+   - find a way to not declare sentences twice
+
+"""
+
 
 import pygame
-import random
+
+import library
+import block_builder
+import recipes
 
 pygame.init()
 
@@ -23,74 +30,40 @@ screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Language-Tetris")
 
 
-#####Declare functions and objects#####
-
-class Block(pygame.sprite.Sprite):
-    def __init__(self, word):
-        pygame.sprite.Sprite.__init__(self)
-        #self.id = this_id
-        self.x = 275
-        self.y = 0
-        self.word = word
-        self.change_x = 0
-        self.change_y = 0
-        self.color = BLUE
-        self.active = True
-        self.image = pygame.Surface((100,50))
-        self.rect = self.image.get_rect()
-        #self.landed = False
-    def move(self):
-        if self.active == True:
-            #self.x += self.change_x
-            self.y += change_y
-            self.rect.move_ip(0,change_y)
-            if self.x >= 600 and change_x > 0:
-                self.x = 600
-            elif self.x <= 0 and change_x < 0:
-                self.x = 0
-            else:
-                self.x = self.x + change_x
-                self.rect.move_ip(change_x,0)
-        else:
-            self.x = self.x
-            self.y = self.y
-    def draw(self, screen):
-        pygame.draw.rect(screen,self.color,[self.x,self.y,100,50],0)
-        font = pygame.font.SysFont('Calibri', 25, True, False)
-        text = font.render(self.word,True,BLACK)
-        screen.blit(text, [self.x+15, self.y+15])
-    def check(self):
-        if self.active == True:
-            if self.y >= 450:
-                self.active = False
-                #self.landed = True
-                landed_blocks.add(self)
-            elif pygame.sprite.spritecollideany(self, landed_blocks, False):
-                collided = pygame.sprite.spritecollide(self, landed_blocks, False)
-                for block in collided:
-                    check_aligned(self, block)
-                print 'collision'
-                self.active = False
-                #self.landed = True
-                landed_blocks.add(self)
-
-def get_word():
-    sentence = sentences[random.randint(0,(len(sentences)-1))]
-    word = sentence[random.randint(0,(len(sentence)-1))]
-    return word
-
-def check_aligned(block1,block2):
-    if abs(block1.x - block2.x) < 25:
-        print 'words', block1.word, block2.word
-        for sentence in sentences:
-            if sentence[0] == block1.word and sentence[1] == block2.word:
-                block1.color = RED
-                block2.color = RED
-                block1.y = 500
-                block2.y = 500
 
 #def check_if_sense(block1
 #####Declare variable:#####
+sentenc_es = [
+['bonne', 'chance'],
+['bonne', 'annee']
+]
+
+
+def check(block):
+    if block.active == True:
+        if block.y >= 450:
+            print 'hit bottom'
+            #block.test = True
+            landed_blocks.add(block)
+            block.active = False
+        elif pygame.sprite.spritecollideany(block, landed_blocks, False):
+            print 'collided'
+            collided = pygame.sprite.spritecollide(block, landed_blocks, False)
+            for each_block in collided:
+                check_aligned(block, each_block)
+            landed_blocks.add(block)
+            block.active = False
+
+
+def check_aligned(block1,block2):
+    if abs(block1.x - block2.x) < 25 or (block1.x + 100) == block2.x:
+        print 'words', block1.word, block2.word
+        for sentence in sentenc_es:
+            if sentence[0] == block1.word and sentence[1] == block2.word:
+                block1.color = RED
+                block2.color = RED
+
+
 done = False #Runs until closed
 clock = pygame.time.Clock() ##Manage speed
 game_over = False
@@ -99,7 +72,7 @@ blocks = []
 all_blocks = pygame.sprite.Group()
 landed_blocks = pygame.sprite.Group()
 
-change_y = 0
+change_y = 1
 change_x = 0
 ###### MAIN LOOP #####
 while not done:
@@ -116,19 +89,19 @@ while not done:
             if event.key == pygame.K_RIGHT:
                 change_x = 2
             if event.key == pygame.K_DOWN:
-                change_y = 2
+                change_y = 4
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 change_x = 0
             elif event.key == pygame.K_DOWN:
-                change_y = 0
+                change_y = 2
 
     ###### Game logic goes here: ######
 
-    #Add new block:
+    #Add new block when there are no active blocks
     if len(blocks) <1 or blocks[len(blocks)-1].active == False:
-        word = get_word()
-        block = Block(word)
+        word = library.get_word()
+        block = block_builder.Block(word, BLUE, BLACK)
         blocks.append(block)
         print 'blocks', blocks
         for block in blocks:
@@ -139,19 +112,19 @@ while not done:
         print 'landed blocks', landed_blocks
 
 
-
-    #Check if game over
-    #game_over = check_if_game_over()
-
-
     ##### Drawing logic goes here: #####
     screen.fill(WHITE) #clear screen before Drawing
 
-    for each_block in blocks:
-    #    if each_block.active == True and each_block.landed == False:
-        each_block.check()
-        each_block.move()
-        each_block.draw(screen)
+    for block in blocks:
+
+        check(block) # check all
+
+        if block.active == True:
+            block.move(change_x, change_y)
+        elif block.color == RED: #red means its been used to form a sentence
+            block.move(0, 3)
+
+        block.draw(screen) # draw all
 
     pygame.display.flip() #update view
 
