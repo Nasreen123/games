@@ -8,11 +8,11 @@ def get_input():
 def split_input(user_input):
     if len(user_input) == 3:
         if is_a_number(user_input[0:2]):
-            print 'user_input[0:2] is a number', user_input[0:2]
+            #print 'user_input[0:2] is a number', user_input[0:2]
             num = user_input[0:2]
             let = user_input[2]
         elif is_a_number(user_input[1:]):
-            print 'user_input[1:] is a number', user_input[1:]
+            #print 'user_input[1:] is a number', user_input[1:]
             num = user_input[1:]
             let = user_input[0]
         else:
