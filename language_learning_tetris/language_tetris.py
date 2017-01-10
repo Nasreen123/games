@@ -6,12 +6,6 @@ import game_functions
 
 pygame.init()
 
-#Define colors
-BLACK    = (   0,   0,   0)
-WHITE    = ( 255, 255, 255)
-GREEN    = (   0, 255,   0)
-RED      = ( 255,   0,   0)
-BLUE     = (   0,   0, 255)
 
 #Open window for game
 size = (700, 500)
@@ -24,6 +18,13 @@ game_over = False #Runs until closed
 clock = pygame.time.Clock() ##Manage speed
 
 tracker = block_tracker.Tracker()
+
+#Define colors
+BLACK    = (   0,   0,   0)
+WHITE    = ( 255, 255, 255)
+GREEN    = (   0, 255,   0)
+RED      = ( 255,   0,   0)
+BLUE     = (   0,   0, 255)
 
 change_y = 1
 change_x = 0
@@ -42,20 +43,19 @@ while not game_over:
             if event.key == pygame.K_RIGHT:
                 change_x = 1
             if event.key == pygame.K_DOWN:
-                change_y = 4
+                change_y = 2
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 change_x = 0
             elif event.key == pygame.K_DOWN:
-                change_y = 2
+                change_y = 1
 
     ###### Game logic goes here: ######
 
     #~~Add new block when there are no active blocks
     if len(tracker.blocks) <1 or tracker.blocks[len(tracker.blocks)-1].active == False:
         word, units = word_logic.get_word()
-        length = units * 50 + 50
-        block = block_builder.Block(word, BLUE, BLACK, length)
+        block = block_builder.Block(word,units)
         tracker.blocks.append(block)
         for block in tracker.blocks:
             print block.active
@@ -83,13 +83,13 @@ while not game_over:
                     #check_if_sentence returns the blocks
                     #if they are red they will be removed
                 if word_logic.check_if_sentence(block, block2):
-                    block.color = RED
-                    block2.color = RED
+                    block.color = WHITE
+                    block2.color = WHITE
 
         if block.active == True:
             block.move(change_x, change_y)
-        elif block.color == RED: #red means its been used to form a sentence
-            block.move(0, 3)
+        elif block.color == WHITE: #white means its been used to form a sentence
+            block.move(0, 1)
 
         block.draw(screen) # draw all
 

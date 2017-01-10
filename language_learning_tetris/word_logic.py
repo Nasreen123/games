@@ -5,7 +5,9 @@ sentences = [
 ['bonne', 'chance'],
 ['bonne', 'annee'],
 ['quelle', 'chance'],
-['annee', 'prochaine']
+['annee', 'prochaine'],
+['une', 'annee'],
+['une', 'chance']
 ]
 
 def get_word():

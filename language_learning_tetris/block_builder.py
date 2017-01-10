@@ -1,8 +1,15 @@
 import pygame
 
+#Define colors
+BLACK    = (   0,   0,   0)
+WHITE    = ( 255, 255, 255)
+GREEN    = (   0, 255,   0)
+RED      = ( 255,   0,   0)
+BLUE     = (   0,   0, 255)
+
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, word, color, font_color, length):
+    def __init__(self, word, units):
         pygame.sprite.Sprite.__init__(self)
         #self.id = this_id
         self.x = 275
@@ -10,11 +17,12 @@ class Block(pygame.sprite.Sprite):
         self.word = word
         self.change_x = 0
         self.change_y = 0
-        self.color = color
+        self.colors = [GREEN, BLUE, RED]
+        self.color = self.colors[int(units)]
         self.test = False
-        self.font_color = font_color
+        self.font_color = BLACK
         self.active = True
-        self.length = length
+        self.length = units * 25 + 75
         self.image = pygame.Surface((self.length,50))
         self.rect = self.image.get_rect()
 

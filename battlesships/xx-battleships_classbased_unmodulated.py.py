@@ -1,14 +1,3 @@
-"""
-Improvements:
-- remove game class
-things to do with board go to board, things to do with driver go to driver
-- make the board represented with a numpy array? and consistent - visualization
-and keeping track by same way, see this:
-http://thelivingpearl.com/2014/01/29/the-game-of-tic-tac-toe-in-python/
-- complete the random ship placer
-
--then make a modulated one that is not in classes?
-"""
 
 
 class Driver(object):
