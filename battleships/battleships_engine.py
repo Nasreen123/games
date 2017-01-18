@@ -1,8 +1,3 @@
-"""
-Problems to solve:
-convert input does not recognize 10
-get input doesnt have unrecognizable input plan
-"""
 
 
 import boardsetup
