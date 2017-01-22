@@ -5,16 +5,16 @@ class Square(object):
         self.id = id
         self.ship = False
         self.shown = False
-        self.buffer_or_taken = False
+        self.buffer_or_taken = False #to account for space around ships
 
 def set_board(length):
     #print 'set_board'
     board = []
-    for i in range(length):
+    for i in range(length): #i rows, j columnes
         board.append([Square( ((j)+(i*length)) ) for j in range(length)])
     return board
 
-#this function check if the ship fits starting at a particular square
+#this function checks if the ship fits starting at a particular square
 def does_ship_fit_here(board, starti, startj, direction, ship_size):
     #print 'does_ship_fit_here', len(board), starti, startj, direction, ship_size
     test = []
@@ -24,7 +24,7 @@ def does_ship_fit_here(board, starti, startj, direction, ship_size):
         j, i = 0, 1
 
     for number in range(ship_size):
-        icoord = int(starti+(number*i)) #add number to start to move own/along
+        icoord = int(starti+(number*i)) #add number to start to move down/along
         jcoord = int(startj+(number*j)) #multiply by i or j (1 or 0) so in one direction only
         if icoord  < len(board) and jcoord < len(board): #check it fits on the board
             test.append(board[icoord][jcoord].buffer_or_taken)
@@ -82,7 +82,7 @@ def set_ship(board, ship_size):
     directions = [0, 1] #0 = down, 1= right
     options = [] #store all possible options:
 
-    for direction in directions:
+    for direction in directions: #test both directions
         for i in range(len(board)): #iterate through rows
             for j in range(len(board)): #iterate through columns
                 if does_ship_fit_here(board, i, j, direction, ship_size) == True:
@@ -103,7 +103,7 @@ def set_ship(board, ship_size):
     import math
     #converting to and from ids to index could be a seperate function???
     starti = math.floor(id_of_chosen_square/len(board)) #get row
-    startj = id_of_chosen_square - (starti*len(board))
+    startj = id_of_chosen_square - (starti*len(board)) 
     mark_ship_on_board(board, starti, startj, direction, ship_size)
 
 

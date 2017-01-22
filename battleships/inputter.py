@@ -6,23 +6,12 @@ def get_input():
 
 
 def split_input(user_input):
-    if len(user_input) == 3:
-        if is_a_number(user_input[0:2]):
-            #print 'user_input[0:2] is a number', user_input[0:2]
-            num = user_input[0:2]
-            let = user_input[2]
+    if len(user_input) == 3 or len(user_input) == 2:
+        if is_a_number(user_input[0:-1]):
+            num = user_input[0:-1]
+            let = user_input[-1]
         elif is_a_number(user_input[1:]):
-            #print 'user_input[1:] is a number', user_input[1:]
             num = user_input[1:]
-            let = user_input[0]
-        else:
-            return ([False])
-    elif len(user_input) == 2:
-        if is_a_number(user_input[0]):
-            num = user_input[0]
-            let = user_input[1]
-        elif is_a_number(user_input[1]):
-            num = user_input[1]
             let = user_input[0]
         else:
             return ([False])
@@ -36,7 +25,7 @@ def convert_input(num, let):
     numbers = [str(number) for number in range(1,11)]
     if let in alphabet and num in numbers:
         i = alphabet.index(let)
-        j = numbers.index(num)
+        j = numbers.index(num) #convert num between 0 start index and display
         return (True, i, j)
     else:
         print 'invalid input, try again'
