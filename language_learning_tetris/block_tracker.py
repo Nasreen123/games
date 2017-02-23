@@ -30,6 +30,6 @@ class Tracker():
 
     def check_aligned(self,block1,block2):
         if block2:
-            if abs(block1.x - block2.x) < 26 or (block1.x + 100) == block2.x:
+            if abs(block1.x - block2.x) < 26 or (block1.x + block1.length) == block2.x:
                 return True, block1, block2
         return False, block1, block2

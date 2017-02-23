@@ -15,6 +15,7 @@ pygame.display.set_caption("Language-Tetris")
 
 #####Declare game variable:#####
 game_over = False #Runs until closed
+
 clock = pygame.time.Clock() ##Manage speed
 
 tracker = block_tracker.Tracker()
@@ -31,19 +32,18 @@ change_x = 0
 ###### MAIN LOOP #####
 while not game_over:
 
-    ###Add game over loop here
-
     #####Main event loop: (ALL USER EVENTS SHOULD GO HERE)
     for event in pygame.event.get(): #user does something
         if event.type == pygame.QUIT: #if user closes:
-            done = True
+            print 'quit pressed'
+            game_over = True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 change_x = -1
             if event.key == pygame.K_RIGHT:
                 change_x = 1
             if event.key == pygame.K_DOWN:
-                change_y = 2
+                change_y = 3
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 change_x = 0
@@ -78,11 +78,11 @@ while not game_over:
                 #tracker.check_aligned takes the block and the block it collided with
                 #if no second block - returns False, block1, empty list
                 # returns T/F, block1, list of collided/ empty list
-            aligned, block, block2 = tracker.check_aligned(block, collided_with)
+            aligned, block, block2 = True, block, collided_with #tracker.check_aligned(block, collided_with)
             if aligned == True:
                     #check_if_sentence returns the blocks
                     #if they are red they will be removed
-                if word_logic.check_if_sentence(block, block2):
+                if word_logic.check_if_sentence(block.word, block2.word):
                     block.color = WHITE
                     block2.color = WHITE
 
@@ -93,7 +93,7 @@ while not game_over:
 
         block.draw(screen) # draw all
 
-        game_over = game_functions.is_game_done(block)
+        game_over = game_over or game_functions.is_game_done(block)
 
     pygame.display.flip() #update view
 

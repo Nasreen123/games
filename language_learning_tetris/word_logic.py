@@ -10,6 +10,8 @@ sentences = [
 ['une', 'chance']
 ]
 
+sentences_sets = [set(l) for l in sentences]
+
 def get_word():
     sentence = sentences[random.randint(0,(len(sentences)-1))]
     word = sentence[random.randint(0,(len(sentence)-1))]
@@ -17,8 +19,5 @@ def get_word():
     print word, 'LENGTH: ', len(word), 'UNITS: ', units
     return word, units
 
-def check_if_sentence(block1, block2):
-    for sentence in sentences:
-        if sentence[0] == block1.word and sentence[1] == block2.word:
-            return True
-    return False
+def check_if_sentence(word1, word2):
+    return set([word1, word2]) in sentences_sets
