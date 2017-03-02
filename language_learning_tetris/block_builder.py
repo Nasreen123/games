@@ -25,8 +25,10 @@ class Block(pygame.sprite.Sprite):
         self.length = units * 25 + 75
         self.image = pygame.Surface((self.length,50))
         self.rect = self.image.get_rect()
+        self.collided_with = []
 
-        #self.landed = False
+
+        ############# FIX RECTANGLES!!!
     def move(self, change_x, change_y):
         change_x = change_x * 25
         change_y = change_y * 3
@@ -40,6 +42,7 @@ class Block(pygame.sprite.Sprite):
         self.y += change_y
         self.rect.move_ip(change_x,0)
         self.rect.move_ip(0,change_y)
+
 
     def draw(self, screen):
         pygame.draw.rect(screen,self.color,[self.x,self.y,self.length,50],0)

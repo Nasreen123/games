@@ -61,10 +61,35 @@ while not game_over:
             print block.active
 
 
-
     #~~Draw new screen:
     screen.fill(WHITE)
-    #~~Iterate through the blocks:
+    #~~Iterate through the blocks: ##### WHY DO WE ITERATE THROUGH ALL EACH TIME?
+    """    for block in tracker.blocks:
+        #tracker.check takes a block, and compares it against self.landed_blocks
+        #ALSO CHECKS IF IT LANDED
+        #it returns: block, list of blocks it collided with (empty if none)
+        #block, collided_with = tracker.check(block)
+        block = tracker.check(block)
+
+        if block.collided_with:
+            for collided_block in block.collided_with:
+                print 'current block word: ', block.word
+                #check if sentence returns true if the two blocks form a sentence
+                if word_logic.check_if_sentence(block.word, collided_block.word):
+                    block.color = WHITE
+                    collided_block.color = WHITE
+                    #block, collided_with = tracker.check(collided_block)
+                    words_collided_with = [block.word for block in block.collided_with]
+                    print 'collided block already collided with: ', words_collided_with
+
+        if block.color == WHITE: #white means its been used to form a sentence
+            print 'block is white'
+            block.move(0, 1000)
+            block.active = False
+        elif block.active == True:
+            print 'block is active so move'
+            block.move(change_x, change_y)"""
+
     for block in tracker.blocks:
 
         #tracker.check takes a block, and compares it against self.landed_blocks
@@ -74,17 +99,11 @@ while not game_over:
 
         if collided_with:
 
-            #for each_block in collided_with:
-                #tracker.check_aligned takes the block and the block it collided with
-                #if no second block - returns False, block1, empty list
-                # returns T/F, block1, list of collided/ empty list
-            aligned, block, block2 = True, block, collided_with #tracker.check_aligned(block, collided_with)
-            if aligned == True:
-                    #check_if_sentence returns the blocks
-                    #if they are red they will be removed
-                if word_logic.check_if_sentence(block.word, block2.word):
+            for each_block in collided_with:
+
+                if word_logic.check_if_sentence(block.word, each_block.word):
                     block.color = WHITE
-                    block2.color = WHITE
+                    each_block.color = WHITE
 
         if block.active == True:
             block.move(change_x, change_y)
@@ -93,7 +112,7 @@ while not game_over:
 
         block.draw(screen) # draw all
 
-        game_over = game_over or game_functions.is_game_done(block)
+    game_over = game_over or game_functions.is_game_done(block)
 
     pygame.display.flip() #update view
 
