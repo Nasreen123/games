@@ -1,1 +1,1 @@
-Some games written in python
+Terminal games written in python
